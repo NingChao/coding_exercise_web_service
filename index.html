@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>coding_exercise_web_service</title>
+  </head>
+  <body>
+    <div id="app">
+      <el-button @click="dialogVisible = true">ADD POST</el-button>
+      <el-dialog :visible.sync="dialogVisible" title="Add Post">
+        <p>Post Your Thoughts</p>
+        <el-input placeholder="Please input" maxlength=255 v-model="input" clearable></el-input>
+        <span slot="footer" class="dialog-footer">
+        	<el-button @click="dialogVisible = false">CANCEL</el-button>
+        	<el-button type="primary" @click="dialogVisible = false; postMessage()">POST</el-button>
+        </span>
+      </el-dialog>
+      <el-table
+        :data="postData"
+        empty-text="No post"
+        style="width: 100%">
+        <el-table-column
+          prop="post"
+          label="POSTS">
+        </el-table-column>
+      </el-table>
+    </div>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
