@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+const WebSocket = require('ws');
 
 // create mysql connection
 var con = mysql.createConnection({
@@ -25,22 +26,26 @@ con.connect(function(err) {
   });
 });
 
-const WebSocket = require('ws');
+// create WebSocket server
 const wss = new WebSocket.Server({ port: 8080 });
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
+
+    // save received post into database
     var sql = "INSERT INTO posts (post) VALUES ('" + message +"')";
   	con.query(sql, function (err, result) {
       if (err) throw err;
       console.log("1 record inserted");
   	});
 
+    // push received post to all other connected clients
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(message);
       }
     });
+
   });
 });
